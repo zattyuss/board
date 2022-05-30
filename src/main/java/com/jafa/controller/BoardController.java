@@ -52,4 +52,16 @@ public class BoardController {
 		rttr.addFlashAttribute("message", board.getBno() + "번 등록함");
 		return "redirect:list";
 	}
+	
+	@GetMapping("/modify")
+	public String modify(Long bno, Model model) {
+		model.addAttribute("board", service.get(bno));
+		return "board/modify";
+	}
+	
+	@PostMapping("/update")
+	public String update(Board board) {
+		service.update(board);
+		return "redirect:list";
+	}
 }
