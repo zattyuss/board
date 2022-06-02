@@ -5,7 +5,11 @@
 
 <mapper namespace="com.jafa.dao.BoardMapper">
 	<select id="getList" resultType="com.jafa.dto.Board" >
-		select * from board_tbl order by bno desc
+		select * from board_tbl limit #{pageStart}, #{perPageNum}
+	</select>
+	
+	<select id="totalCount" resultType="Integer">
+		select count(*) from board_tbl
 	</select>
 	
 	<select id="findByBno" resultType="com.jafa.dto.Board">
@@ -25,7 +29,7 @@
 		title = #{title},
 		content = #{content},
 		writer = #{writer},
-		updateDate = now()
+		updateDate = now()0
 		where bno = #{bno}
 	</update>
 	
