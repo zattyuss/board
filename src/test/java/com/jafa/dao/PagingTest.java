@@ -23,9 +23,9 @@ public class PagingTest {
 		for (int i = 1; i <= 412; i++) {
 			
 		Board board = new Board(); 
-		board.setTitle("제목 : 테스트 중입니다." + i);
-		board.setContent("내용 : 테스트 중입니다." + i);
-		board.setWriter("글쓴이" + i);
+		board.setTitle("제목 : 스프링 중입니다." + i);
+		board.setContent("내용 : 자바JSP 중입니다." + i);
+		board.setWriter("홍길동" + i);
 		mapper.insert(board);
 		}
 	}
