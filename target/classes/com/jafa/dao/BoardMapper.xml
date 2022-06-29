@@ -55,7 +55,12 @@
 		title = #{title},
 		content = #{content},
 		writer = #{writer},
-		updateDate = now()0
+		updateDate = now()
+		where bno = #{bno}
+	</update>
+	
+	<update id="updateReplyCnt">
+		update board_tbl set replyCnt = replyCnt + #{amount}
 		where bno = #{bno}
 	</update>
 	

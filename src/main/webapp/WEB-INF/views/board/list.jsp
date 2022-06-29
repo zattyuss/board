@@ -27,7 +27,7 @@
 		<tr>
 			<td>${b.bno }</td>	
 			<td>
-				<a href="get?bno=${b.bno }">${b.title }</a>
+				<a href="get?bno=${b.bno }">${b.title }<b>[${b.replyCnt}]</b></a>
 			</td>
 			<td>${b.writer }</td>	
 			<td>
@@ -82,9 +82,16 @@ $(function(){
 	$('#pageForm a').on('click', function (e){
 		e.preventDefault();
 		pageForm.find('input[name="page"]').val($(this).attr('href'));
+		let keyword = pageForm.find('input[name="keyword"]').val();
+		if(keyword.trim() == ''{
+			let pageNum = ${pageForm}.find('input[name="page"]').clone();
+			pageForm.empty();
+			pageForm.append(pageNum)
+		}
+	
 		
 		
-		$('#pageForm').submit();
+		//$('#pageForm').submit();
 	});
 	
 })	

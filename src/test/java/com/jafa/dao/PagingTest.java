@@ -19,7 +19,6 @@ public class PagingTest {
 	
 	@Test
 	public void insertData() {
-		
 		for (int i = 1; i <= 412; i++) {
 			
 		Board board = new Board(); 
