@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,12 +19,10 @@
 <button id="uploadBtn">업로드</button>
 
 <div class="uploadResult">
-	<ul>
-
-	</ul>
+	<ul></ul>
 </div>
 
-
+<div class="oImg"></div>
 
 </body>
 
@@ -30,7 +30,7 @@
 $(function(){
 	let contextPath = '${pageContext.request.contextPath}';
 	let regex = new RegExp("(.*?)\.(exe|sh|js|alz)$")
-	let maxSize = 5242880;
+	let maxSize = 524288000;
 	
 	function checkExtension(fileName, fileSize){
 		
@@ -77,11 +77,59 @@ $(function(){
 	function showUploadFile(uploadResultArr){
 		let str = "";
 		$(uploadResultArr).each(function(i, obj){
-			str += "<li>"+obj.fileName+"</li>"
+		
+			if(!obj.image){ //이미지가 아닌 경우
+				let fileCellPath = encodeURIComponent(obj.uploadPath + "/" + obj.uuid + "_" + obj.fileName);
+				let fileLink = fileCellPath.replace(new RegExp(/\\/g),"/");
+				
+				str+= "<li><img src='${contextPath}/resources/image/cat.jpg' style='width:100px;'>"
+				str+= "<a href='${contextPath}/download?fileName="+fileCellPath+"'>"+obj.fileName+"</a>"
+				str+= "<span data-file='"+fileLink+"' data-type='file'>삭제</span>"
+				str+= "</li>"
+			}else{ //이미지인 경우
+				let fileCellPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
+				let originPath = obj.uploadPath + "\\" + obj.uuid + "_" + obj.fileName;
+				originPath = originPath.replace(new RegExp(/\\/g), "/");
+				
+				str += "<li><img src='${contextPath}/display?fileName="+fileCellPath+"'>";
+				str += "<a href='javascript:showImage(\""+originPath+"\")'>이미지원본보기</a>";
+				str += "<br><span data-file='"+fileCellPath+"' data-type='image'>삭제</span>"
+				str += "</li>"				
+			}
+		
 		})
 		uploadResult.append(str);
 	}
+	
+	uploadResult.on('click', 'span', function(){
+		let targetFile = $(this).data('file');
+		let type = $(this).data('type');
+		
+		$.ajax({
+			url : contextPath + '/deleteFile',
+			type : 'post',
+			data : {
+				fileName : targetFile,
+				type : type
+			},
+			dataType : "text",
+			success : function(result){
+				alert(result)
+			}
+		})
+	})
+	
+	
+	
 })
-</script>
 
+function showImage(path){
+	let imgTag = "<img src='${contextPath}/display?fileName="+encodeURI(path)+"'>";
+	$('.oImg').html(imgTag);
+	
+}
+</script>
+<style>
+.oImg img {width:1000px;}
+</style>
 </html>

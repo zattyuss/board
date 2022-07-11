@@ -22,7 +22,7 @@ public class Test11 {
 	@Test
 	public void test01() {
 		String contentType = "image...";
-		System.out.println(contentType.startsWith());
+		//System.out.println(contentType.startsWith());
 	}
 	
 }

@@ -59,7 +59,7 @@
 		</c:if>
 		<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="pageNum">
 			<li class="page-item ${pageMaker.criteria.page == pageNum ? 'active':''}">
-				<a href="${pageNum}" class="page-link">${pageNum}</a>
+				<a href="?page=${pageNum}" class="page-link">${pageNum}</a>
 			</li>
 		</c:forEach>
 		<c:if test="${pageMaker.next}">

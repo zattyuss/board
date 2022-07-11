@@ -3,34 +3,32 @@ package com.jafa.dto;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter @Setter
+@Getter
+@Setter
 public class PageMaker {
+   
+   private Criteria criteria;
+   private int startPage;
+   private int endPage;
+   private int tempEndPage;
+   private int totalCount;
+   
+   private int displayPageNum = 10;
+   
+   private boolean next;
+   private boolean prev;
 
-	Criteria criteria;
-	int totalCount;
-	int startPage;
-	int endPage;
-	int displayPageNum = 10;
-	boolean prev;
-	boolean next;
-	
-
-	public void setTotalCount(int totalCount) {
-		this.totalCount = totalCount;
-		calcData();
-	}
-	
-	private void calcData() {
-		endPage = (int) (Math.ceil(criteria.getPage() / (double)displayPageNum) * displayPageNum);
-		startPage = endPage-displayPageNum+1;
-		
-		int tempEndPage = (int) Math.ceil(totalCount / (double)criteria.getPerPageNum());
-		if (endPage > tempEndPage) endPage = tempEndPage;
-		
-		
-		prev = startPage != 1;
-		next = endPage < tempEndPage;
-		
-		
-	}
+   public PageMaker(Criteria criteria, int totalCount) {
+      this.criteria = criteria;
+      this.totalCount = totalCount;
+      endPage = (int) Math.ceil(criteria.getPage()/(double)displayPageNum)*displayPageNum;
+      startPage = endPage - displayPageNum + 1;
+      
+      tempEndPage = (int) Math.ceil(totalCount/(double)criteria.getPerPageNum());
+      if(endPage>tempEndPage) endPage=tempEndPage;
+      
+      prev = startPage == 1 ? false : true;
+      next = endPage >= tempEndPage ? false : true;
+   }
+   
 }

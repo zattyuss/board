@@ -33,6 +33,10 @@
 		limit #{pageStart}, #{perPageNum}
 	</select>
 	
+	<select id="get" resultType="com.jafa.dto.Board">
+		select * from board_tbl where bno = ${bno}
+	</select>
+	
 	<select id="totalCount" resultType="int">
 		select count(*) from board_tbl
 		<include refid="search"/>
@@ -43,10 +47,10 @@
 	</select>
 
 	<insert id="insert">
-		insert into board_tbl(title, content, writer)
-		values(#{title},#{content},#{writer})
-		<selectKey keyProperty="bno" order="AFTER" resultType="long">
-			select last_insert_id()
+		insert into board_tbl(bno, title, content, writer)
+		values(#{bno},#{title},#{content},#{writer})
+		<selectKey keyProperty="bno" order="BEFORE" resultType="long">
+			select max(bno)+1 from board_tbl;
 		</selectKey>
 	</insert>
 	

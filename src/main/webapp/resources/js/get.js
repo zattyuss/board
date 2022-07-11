@@ -103,4 +103,34 @@ $(function(){
 		let timeArr = JSON.stringify(timeValue).substr(1).split(",");
 		return `${timeArr[0]}년 ${timeArr[1]}월 ${timeArr[2]}일`;
 	}
+	
+	//댓글리스트 불러오기
+	$.getJSON(contextPath + "/board/getCatList", {bno : bnoValue}, function(catList){	
+		let str="";
+		$(catList).each(function(i, obj){
+			if(!obj.fileType){ //이미지가 아닌 경우
+				let fileCellPath = encodeURIComponent(obj.uploadPath + "/" + obj.uuid + "_" + obj.fileName);
+				let fileLink = fileCellPath.replace(new RegExp(/\\/g),"/");
+				
+				str+= "<li class='list-group-item' data-path='"+obj.uploadPath+"'";
+				str+= "data-uuid='"+obj.uuid+"' data-filename='"+obj.fileName+"' data-type='"+obj.fileType+"'>";
+				str+= "<img src='"+contextPath+"/resources/image/cat.jpg' style='width:100px;'>"
+				str+= "<a href='"+contextPath+"/download?fileName="+fileCellPath+"'>"+obj.fileName+"</a>"
+				str+= "</li>"
+			}else{ //이미지인 경우
+				let fileCellPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
+				let originPath = obj.uploadPath + "\\" + obj.uuid + "_" + obj.fileName;
+				originPath = originPath.replace(new RegExp(/\\/g), "/");
+				
+				str+= "<li class='list-group-item' data-path='"+obj.uploadPath+"'";
+				str+= "data-uuid='"+obj.uuid+"' data-filename='"+obj.fileName+"' data-type='"+obj.fileType+"'>";
+				str+= "<img src='"+contextPath+"/display?fileName="+fileCellPath+"'>";
+				str+= "<a href='"+contextPath+"/download?fileName="+originPath+"'>"+obj.fileName+"</a>"
+				str+= "</li>"				
+			}
+		
+		}) // each end
+		$('.uploadResult ul').append(str);
+	})
+	
 })	

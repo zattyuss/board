@@ -22,9 +22,24 @@
 			<p>${board.content}</p>
 		</div>
 		<button class="btn btn-warning modify">수정</button>
-		<button class="btn btn-danger">삭제</button>
+		<button class="btn btn-danger remove">삭제</button>
 		<button class="btn btn-primary list">목록</button>
 	</form>
+	
+<div class="row"> 
+	<div class="col-lg-12">
+		<div class="card">
+			<div class="card-header">
+				<h4>첨부 된 파일</h4>
+			</div>
+			<div class="card-body">
+				<div class="uploadResult">
+					<ul class="list-group"></ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 	
 	<!-- 댓글등록 -->
 	<button id="addReplyBtn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#replyForm">
