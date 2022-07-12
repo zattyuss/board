@@ -3,10 +3,9 @@
 <%@ include file="/WEB-INF/views/layout/header.jspf" %>
 
 <div class="container">
-<sec:authentication property="principal.memberVO.userId" var="userId"/>
-	<h2>회원 페이지</h2>
-	<a href="${contextPath}/customLogout">로그아웃하러 가자</a><br>
-	<a href="${contextPath}/anno/myPage/${userId}">마이페이지</a>
+	<c:if test="${not empty member}">
+		${member}
+	</c:if>
 </div>
 
 <%@ include file="/WEB-INF/views/layout/footer.jspf" %>

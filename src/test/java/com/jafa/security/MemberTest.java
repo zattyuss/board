@@ -58,21 +58,5 @@ public class MemberTest extends AppTest{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

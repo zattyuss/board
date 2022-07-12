@@ -3,6 +3,7 @@
 <%@ include file="/WEB-INF/views/layout/header.jspf" %>
 <div class="container">
 <form action="${pageContext.request.contextPath}/board/register" method="post" id="registerForm">
+<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 	제목 : <input type="text" name="title"><br>
 		 <textarea rows="30" cols="70" name="content"></textarea><br>
 	작성자 : <input type="text" name="writer"><br>
