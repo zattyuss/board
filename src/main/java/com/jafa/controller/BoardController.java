@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,8 +51,9 @@ public class BoardController {
 		return "board/get";
 	}
 	
+	@PreAuthorize("principal.username == #writer")
 	@PostMapping("/remove")
-	public String remove(Long bno, RedirectAttributes rttr) {
+	public String remove(Long bno, RedirectAttributes rttr, String writer) {
 		List<BoardCatVO> catList = service.getCatList(bno);
 		deleteFiles(catList);
 		service.remove(bno);
@@ -60,11 +62,13 @@ public class BoardController {
 	}
 	
 	
-
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/register")
 	public String registerForm() {
 		return "board/register";
 	}
+	
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/register")
 	public String register(Board board, RedirectAttributes rttr) {
 		service.register(board);
@@ -72,11 +76,13 @@ public class BoardController {
 		return "redirect:list";
 	}
 	
-	@GetMapping("/modify")
+	@GetMapping("/modify")	
 	public String modify(Long bno, Model model) {
 		model.addAttribute("board", service.get(bno));
 		return "board/modify";
 	}
+	
+	@PreAuthorize("isAuthenticated() and principal.username == #board.writer")
 	@PostMapping("/modify")
 	public String modify(Board board, RedirectAttributes rttr) {
 		service.modify(board);

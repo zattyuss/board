@@ -71,4 +71,10 @@
 	<delete id="delete">
 		delete from board_tbl where bno=#{bno}
 	</delete>
+	
+	<update id="addViewCount">
+		update board_tbl set viewCount = viewCount + 1
+		where bno = #{bno}
+	</update>
+	
 </mapper>

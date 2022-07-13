@@ -5,8 +5,9 @@
 	<h2>글 수정 페이지</h2>
 
 	<form action="${contextPath}/board/modify" method="post" id="modifyForm">
-	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 		<input type="hidden" name="bno" value="${board.bno}">
+		<input type="hidden" name="writer" value="${board.writer}">
 		제목 : <input type="text" name="title" value="${board.content}">
 		작성자 : <input type="text" name="writer" value="${board.writer}"><br>
 		<textarea rows="30" cols="70" name="content">

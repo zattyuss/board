@@ -1,14 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/layout/header.jspf" %>
+<sec:authentication property="principal.memberVO" var="memberVO"/>
+<sec:authentication property="principal.username" var="writer"/>
 <div class="container">
-<form action="${pageContext.request.contextPath}/board/register" method="post" id="registerForm">
-<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-	제목 : <input type="text" name="title"><br>
-		 <textarea rows="30" cols="70" name="content"></textarea><br>
-	작성자 : <input type="text" name="writer"><br>
-		
-		<button class="btn btn-primary">등록</button>
+	<div class="article_register my-4">
+		<h3>게시글 쓰기</h3>
+	</div>
+	<form action="${pageContext.request.contextPath}/board/register" method="post" id="registerForm">
+	<div class="hiddenArea">
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+	</div>
+		제목 : <input type="text" name="title"><br>
+			 <textarea rows="30" cols="70" name="content"></textarea><br>
+		작성자 : <input type="text" name="writer" class="form-control" readonly="readonly" value="${writer}"><br>
+			
+			<button class="btn btn-primary">등록</button>
 </form>
 <!--  
  <form:form action="register" id="registerForm" modelAttribute="board">

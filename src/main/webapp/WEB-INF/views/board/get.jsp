@@ -2,27 +2,35 @@
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/layout/header.jspf" %>
 <script src="${contextPath}/resources/js/get.js"></script>
+<sec:authorize access="isAuthenticated()">
+	<sec:authentication property="principal.username" var="userId"/>
+</sec:authorize>
 <div class="container">
 	<form id="getForm">
 		<input type="hidden" name="bno" value="${board.bno}">
 		<input type="hidden" name="title" value="${board.title}">
 		<input type="hidden" name="content" value="${board.content}">
 		<input type="hidden" name="writer" value="${board.writer}">
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 		<div>
 			<h3>${board.title}</h3>
 			<p>작성자 : ${board.writer}</p>
 			<p>
 				등록일 : 
-				<fmt:parseDate var="regDate" value="${board.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss"/>
+				<fmt:parseDate var="regDate" value="${board.regDate}" pattern="yyyy-MM-dd'T'HH:mm"/>
 				<fmt:formatDate value="${regDate}" pattern="yyyy년MM월dd일 HH시mm분"/>
 				수정일 :
-				<fmt:parseDate var="updateDate" value="${board.updateDate}" pattern="yyyy-MM-dd'T'HH:mm:ss"/>
+				<fmt:parseDate var="updateDate" value="${board.updateDate}" pattern="yyyy-MM-dd'T'HH:mm"/>
 				<fmt:formatDate value="${updateDate}" pattern="yyyy년MM월dd일 HH시mm분"/>
+				조회수 : ${board.viewCount}
 			</p>
 			<p>${board.content}</p>
 		</div>
-		<button class="btn btn-warning modify">수정</button>
-		<button class="btn btn-danger remove">삭제</button>
+			<button class="btn btn-warning modify">수정</button>
+			<button class="btn btn-danger remove">삭제</button>
+		<c:if test="${userId eq board.writer}">
+			
+		</c:if>
 		<button class="btn btn-primary list">목록</button>
 	</form>
 	
@@ -42,10 +50,14 @@
 </div>
 	
 	<!-- 댓글등록 -->
+	<sec:authorize access="isAuthenticated()">
 	<button id="addReplyBtn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#replyForm">
   		댓글달기
 	</button>
-	
+	</sec:authorize>
+	<sec:authorize access="isAnonymous()">
+		댓글을 등록하려면 로그인을 하세요
+	</sec:authorize>
 	<div>
 		댓글수 ${board.replyCnt}
 	</div>
@@ -116,6 +128,7 @@ $(function(){
 			getForm.submit();
 		})
 		$('#getForm .remove').on('click', function(){
+			getForm.append($('#writer'))
 			getForm.attr("method", "post")
 			getForm.attr("action", "remove")
 			getForm.submit();

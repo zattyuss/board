@@ -19,6 +19,7 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
+import com.jafa.security.CustomAccessDeniedHandler;
 import com.jafa.security.CustomLoginSuccessHandler;
 
 @Configuration
@@ -66,7 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		 
 		  http
 		 	  .csrf()
-		 	  .ignoringAntMatchers("/uploadAjaxAction", "/deleteFile","/replies/**");
+		 	  .ignoringAntMatchers("/uploadAjaxAction", "/deleteFile");
 		 
 	      http.authorizeRequests()
 	      	  .antMatchers("/security/all").permitAll()
@@ -78,7 +79,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	          .passwordParameter("loginPw")
 	          .loginPage("/customLogin")
 	          .loginProcessingUrl("/member/login")
-	          .successHandler(loginSuccessHandler)
+//	          .successHandler(loginSuccessHandler)
 	          .failureHandler(failureHandler);
 	      
 	      http.rememberMe().key("project")
@@ -90,6 +91,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	          .invalidateHttpSession(true)
 	          .deleteCookies("remember-me" , "JSESSION_ID");
 	        
+	      http.exceptionHandling()
+	      	  .accessDeniedHandler(new CustomAccessDeniedHandler());
 	   }
 
 }
