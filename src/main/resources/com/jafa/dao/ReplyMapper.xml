@@ -23,7 +23,8 @@
 	</delete>
 	<update id="update">
 		update reply_tbl
-		set reply = #{reply}, updateDate = now()
+		set reply = #{reply}, 
+		updateDate = now()
 		where rno = #{rno}
 	</update>
 </mapper>

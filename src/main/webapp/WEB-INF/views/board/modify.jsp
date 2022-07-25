@@ -1,21 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ include file="/WEB-INF/views/layout/header.jspf" %>
+   pageEncoding="UTF-8"%>
+<%@ include file="../layout/header.jspf"%>
+<h3>수정페이지</h3>
+<br>
 <div class="container">
-	<h2>글 수정 페이지</h2>
-
-	<form action="${contextPath}/board/modify" method="post" id="modifyForm">
-		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-		<input type="hidden" name="bno" value="${board.bno}">
-		<input type="hidden" name="writer" value="${board.writer}">
-		제목 : <input type="text" name="title" value="${board.content}">
-		작성자 : <input type="text" name="writer" value="${board.writer}"><br>
-		<textarea rows="30" cols="70" name="content">
-			${board.content}
-		</textarea><br>
-		<button class="btn btn-primary">수정</button>
-	</form>	
-	<div class="row"> 
+   <form action="modify" method="post" id="modifyForm">
+      <input type="hidden" name="bno" value="${board.bno}"> 게시물 번호
+      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+      <input type="hidden" name="writer" value="${board.writer}">
+      : ${board.bno } <br> 제목 : <input type="text" name="title"
+         value="${board.title}"><br> 내용 :
+      <textarea rows="" cols="" name="content">${board.content}</textarea>
+      <br> 작성자 : ${board.writer }<br>
+      <button class="btn btn-warning">수정하기</button>
+   </form>
+   <div class="row"> 
 		<div class="col-lg-12">
 			<div class="card">
 				<div class="card-header">
@@ -33,7 +32,9 @@
 		</div>
 	</div>
 </div>
-<%@ include file="/WEB-INF/views/layout/footer.jspf" %>
+<%@ include file="/WEB-INF/views/layout/footer.jspf"%>
+
+
 
 <script>
 let uploadResult = $('.uploadResult ul')

@@ -4,7 +4,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,10 +19,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -44,10 +50,26 @@ public class BoardController {
 		return "board/list";
 	}
 	
-	@RequestMapping(value = "/get", method = RequestMethod.GET)
-	public String get(Long bno, Model model) {
-		Board board = service.get(bno);
-		model.addAttribute("board",  board);
+	@GetMapping("/get")
+	public String get(Long bno, Model model, @CookieValue(required = false) Cookie viewCount, 
+			HttpServletResponse response, HttpServletRequest request){
+		boolean isAddCount = false;
+		if(viewCount != null) {
+			String[] viewed = viewCount.getValue().split("/");
+			List<String> viewedList = Arrays.stream(viewed).collect(Collectors.toList());
+			if(!viewedList.contains(bno.toString())) {
+				viewCount.setValue(viewCount.getValue()+bno+"/");
+				response.addCookie(viewCount);
+				isAddCount = true;
+			}
+		}else {
+			Cookie cookie = new Cookie("viewCount", bno+"/");
+			cookie.setMaxAge(60*60*24);
+			response.addCookie(cookie);
+			isAddCount = true;
+		}
+		
+		model.addAttribute("board",  service.get(bno, isAddCount));
 		return "board/get";
 	}
 	
@@ -78,7 +100,7 @@ public class BoardController {
 	
 	@GetMapping("/modify")	
 	public String modify(Long bno, Model model) {
-		model.addAttribute("board", service.get(bno));
+		model.addAttribute("board", service.get(bno, false));
 		return "board/modify";
 	}
 	
